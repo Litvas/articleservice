@@ -1,10 +1,12 @@
 package com.litvas.articleservice.service;
 
 import com.litvas.articleservice.domain.Article;
+import com.litvas.articleservice.repository.ArticleRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,9 @@ public class ArticleCollectorImpl implements ArticleCollector {
 
     private static final String URL_OF_ALL_ARTICLES = "https://habr.com/all/all/";
 
+    @Autowired
+    private ArticleRepository articleRepository;
+
     public Set<String> getLinksForParsing() {
         Set<String> linkSet = new HashSet<>(5);
         linkExtractor(linkSet);
@@ -26,7 +31,9 @@ public class ArticleCollectorImpl implements ArticleCollector {
     @Override
     @Async
     public Article collectArticle(String link) {
-        return parseArticle(link);
+        Article article = parseArticle(link);
+        articleRepository.save(article);
+        return article;
     }
 
     private Article parseArticle(String link) {
