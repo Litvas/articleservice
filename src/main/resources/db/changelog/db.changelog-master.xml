@@ -5,7 +5,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="litvas" id="20180618-1">
+    <changeSet author="litvas" id="20180629-1">
 
         <createTable tableName="article">
             <column name="id" type="bigint" autoIncrement="true">
@@ -13,19 +13,6 @@
             </column>
             <column name="title" type="varchar(256)"/>
             <column name="content" type="text"/>
-        </createTable>
-
-        <createTable tableName="category">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints unique="true" nullable="false"/>
-            </column>
-            <column name="title" type="varchar(256)"/>
-            <column name="url" type="varchar(256)"/>
-        </createTable>
-
-        <createTable tableName="article_category_set">
-            <column name="article_id" type="bigint"/>
-            <column name="category_set_id" type="bigint"/>
         </createTable>
 
     </changeSet>

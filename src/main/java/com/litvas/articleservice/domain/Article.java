@@ -1,7 +1,6 @@
 package com.litvas.articleservice.domain;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Article {
@@ -13,9 +12,6 @@ public class Article {
 
     @Column(columnDefinition = "text")
     private String content;
-
-    @ManyToMany
-    private Set<Category> categorySet;
 
     public Long getId() {
         return id;
@@ -41,11 +37,12 @@ public class Article {
         this.content = content;
     }
 
-    public Set<Category> getCategorySet() {
-        return categorySet;
-    }
-
-    public void setCategorySet(Set<Category> categorySet) {
-        this.categorySet = categorySet;
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                '}';
     }
 }

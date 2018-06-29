@@ -26,8 +26,24 @@ public class ArticleCollectorImpl implements ArticleCollector {
     @Override
     @Async
     public Article collectArticle(String link) {
+        return parseArticle(link);
+    }
 
-        return null;
+    private Article parseArticle(String link) {
+        Article article = null;
+        try {
+            Document articleForParsing = Jsoup.connect(link).get();
+            article = new Article();
+            article.setTitle(articleForParsing.
+                    getElementsByClass("post__title-text").
+                    text());
+            article.setContent(articleForParsing.
+                    getElementsByClass("post__body post__body_full").
+                    text());
+        } catch (IOException e) {
+            System.out.println("Can`t found page '" + link + "'");
+        }
+        return article;
     }
 
     private void linkExtractor(Set<String> linkSet) {
