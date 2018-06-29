@@ -2,8 +2,12 @@ package com.litvas.articleservice.service;
 
 import com.litvas.articleservice.domain.Article;
 
+import java.util.Set;
+
 public interface ArticleCollector {
 
-    Article collectArticle();
+    Set<String> getLinksForParsing();
+
+    Article collectArticle(String link);
 
 }

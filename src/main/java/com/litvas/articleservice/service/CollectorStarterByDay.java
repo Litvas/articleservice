@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 @Component
 public class CollectorStarterByDay implements CommandLineRunner {
 
@@ -12,8 +14,9 @@ public class CollectorStarterByDay implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        for (int i = 0; i < 5; i++) {
-            articleCollector.collectArticle();
+        Set<String> linksForParsing = articleCollector.getLinksForParsing();
+        for (String s : linksForParsing) {
+            articleCollector.collectArticle(s);
         }
     }
 }
