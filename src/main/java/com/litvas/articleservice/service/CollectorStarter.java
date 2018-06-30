@@ -10,13 +10,13 @@ import java.util.Set;
 public class CollectorStarter implements CommandLineRunner {
 
     @Autowired
-    private ArticleCollector articleCollector;
+    private ArticleHandler articleHandler;
 
     @Override
     public void run(String... args) throws Exception {
-        Set<String> linksForParsing = articleCollector.getLinksForParsing();
+        Set<String> linksForParsing = articleHandler.getLinksForParsing();
         for (String link : linksForParsing) {
-            articleCollector.collectArticle(link);
+            articleHandler.collectArticle(link);
         }
     }
 }

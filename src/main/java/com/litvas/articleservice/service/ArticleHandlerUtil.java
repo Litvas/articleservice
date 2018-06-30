@@ -1,42 +1,23 @@
 package com.litvas.articleservice.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.litvas.articleservice.domain.Article;
-import com.litvas.articleservice.repository.ArticleRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Set;
 
-@Service
-public class ArticleCollectorImpl implements ArticleCollector {
+@Component
+class ArticleHandlerUtil {
 
     private static final String URL_OF_ALL_ARTICLES = "https://habr.com/all/all/";
 
-    @Autowired
-    private ArticleRepository articleRepository;
-
-    public Set<String> getLinksForParsing() {
-        Set<String> linkSet = new HashSet<>(5);
-        linkExtractor(linkSet);
-        return linkSet;
-    }
-
-    @Override
-    @Async
-    public Article collectArticle(String link) {
-        Article article = parseArticle(link);
-        articleRepository.save(article);
-        return article;
-    }
-
-    private Article parseArticle(String link) {
+    Article parseArticle(String link) {
         Article article = null;
         try {
             Document articleForParsing = Jsoup.connect(link).get();
@@ -53,7 +34,7 @@ public class ArticleCollectorImpl implements ArticleCollector {
         return article;
     }
 
-    private void linkExtractor(Set<String> linkSet) {
+    void linkExtractor(Set<String> linkSet) {
         try {
             Document pageWithLinks = Jsoup.connect(URL_OF_ALL_ARTICLES).get();
             Elements listWithArticles = pageWithLinks.getElementsByClass("post__title_link");
@@ -65,5 +46,27 @@ public class ArticleCollectorImpl implements ArticleCollector {
         } catch (IOException e) {
             System.out.println("Can`t found page '" + URL_OF_ALL_ARTICLES + "'");
         }
+    }
+
+    synchronized String getArticleTitle(String searchedRequest) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = mapper.readTree(searchedRequest);
+        } catch (IOException e) {
+            System.out.println("Can`t parse JSON");
+        }
+        return jsonNode.get("articleTitle").asText();
+    }
+
+    synchronized String getRequestedWord(String searchedRequest) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonNode = null;
+        try {
+            jsonNode = mapper.readTree(searchedRequest);
+        } catch (IOException e) {
+            System.out.println("Can`t parse JSON");
+        }
+        return jsonNode.get("word").asText();
     }
 }

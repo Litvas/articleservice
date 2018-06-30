@@ -17,7 +17,7 @@ public class ArticleserviceApplication {
 	@Bean
 	public Executor asyncExecutor() {
 		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-		executor.setThreadNamePrefix("ArticleCollector-");
+		executor.setThreadNamePrefix("ArticleHandler-");
 		executor.initialize();
 		return executor;
 	}
