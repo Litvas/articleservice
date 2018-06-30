@@ -18,8 +18,6 @@ public class WordSearcherImpl implements WordSearcher {
     public int searchMathes(String requestedString) {
         Article article = articleHandler.getOneArticle(articleHandlerUtil.getArticleTitle(requestedString));
         String requestedWord = articleHandlerUtil.getRequestedWord(requestedString);
-        long occurrencesCount = StringUtils.countOccurrencesOf(article.getContent(), requestedWord);
-        System.out.println(occurrencesCount);
-        return 10;
+        return StringUtils.countOccurrencesOf(article.getContent().toUpperCase(), requestedWord.toUpperCase());
     }
 }

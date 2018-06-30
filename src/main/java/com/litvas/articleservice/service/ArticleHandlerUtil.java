@@ -48,7 +48,7 @@ class ArticleHandlerUtil {
         }
     }
 
-    synchronized String getArticleTitle(String searchedRequest) {
+    String getArticleTitle(String searchedRequest) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {
@@ -59,7 +59,7 @@ class ArticleHandlerUtil {
         return jsonNode.get("articleTitle").asText();
     }
 
-    synchronized String getRequestedWord(String searchedRequest) {
+    String getRequestedWord(String searchedRequest) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonNode = null;
         try {
